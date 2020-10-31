@@ -2,8 +2,14 @@ import React, { useState } from "react";
 
 function ListItem(props) {
   const [task, setTask] = useState("");
+  const [checkempty, setCheckempty] = useState(true);
   const handletext = (event) => {
-    setTask(event.target.value);
+    if (event.target.value !== "") {
+      setTask(event.target.value);
+      setCheckempty(false);
+    } else {
+      setCheckempty(true);
+    }
   };
   return (
     <li key={props.key} className="list">
@@ -17,7 +23,7 @@ function ListItem(props) {
         <button
           className="saveTask"
           onClick={() => {
-            props.taskChange(props.index, task);
+            props.taskChange(props.index, task, checkempty);
           }}
         >
           saveTask

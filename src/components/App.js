@@ -17,7 +17,10 @@ function App() {
   const handletext = (event) => {
     setTask(event.target.value);
   };
-  const taskChange = (index1, task) => {
+  const taskChange = (index1, task, check) => {
+    if (check) {
+      return;
+    }
     const updatelist = todolist.map((item, index) => {
       if (index === index1) {
         item = task;
