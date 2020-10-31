@@ -17,6 +17,19 @@ function App() {
   const handletext = (event) => {
     setTask(event.target.value);
   };
+  const taskChange = (index1, task) => {
+    const updatelist = todolist.map((item, index) => {
+      if (index === index1) {
+        item = task;
+      }
+      return item;
+    });
+    setTodoList(updatelist);
+  };
+  const onDelete = (index1) => {
+    const updatelist = todolist.filter((item, index) => index !== index1);
+    setTodoList(updatelist);
+  };
   return (
     <div id="main">
       <textarea id="task" onChange={handletext} value={task}></textarea>
@@ -24,7 +37,7 @@ function App() {
         Add
       </button>
       <ol>
-        <List list={todolist} />
+        <List list={todolist} taskChange={taskChange} onDelete={onDelete} />
       </ol>
     </div>
   );
