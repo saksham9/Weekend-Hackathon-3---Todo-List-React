@@ -4,12 +4,13 @@ import "./../styles/App.css";
 
 function App() {
   const [task, setTask] = useState("");
-  const [list, setList] = useState([]);
+  const [todolist, setTodoList] = useState([]);
   const handleClick = () => {
     if (task !== "") {
-      const updatelist = [...list];
+      const updatelist = [...todolist];
       updatelist.push(task);
-      setList(updatelist);
+      setTodoList(updatelist);
+      setTask("");
       //console.log(updatelist);
     }
   };
@@ -23,7 +24,7 @@ function App() {
         Add
       </button>
       <ol>
-        <List list={list} />
+        <List list={todolist} />
       </ol>
     </div>
   );
