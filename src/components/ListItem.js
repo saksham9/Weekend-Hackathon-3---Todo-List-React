@@ -29,6 +29,7 @@ function ListItem(props) {
           saveTask
         </button>
         <button
+          className="delete"
           onClick={() => {
             props.onDelete(props.index);
           }}
