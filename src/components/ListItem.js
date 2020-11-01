@@ -23,7 +23,7 @@ function ListItem(props) {
     }
   };
   return (
-    <li key={props.key} className="list">
+    <li>
       {props.item}
       <span>
         <button className="edit" onClick={handleClickOpen}>

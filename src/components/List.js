@@ -5,6 +5,7 @@ function List(props) {
     return (
       <ListItem
         key={index}
+        className="list"
         item={item}
         index={index}
         taskChange={props.taskChange}
