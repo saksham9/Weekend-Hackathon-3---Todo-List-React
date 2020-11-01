@@ -39,9 +39,9 @@ function App() {
       <button id="btn" onClick={handleClick}>
         Add
       </button>
-      <ol>
+      <ul className="todolist">
         <List list={todolist} taskChange={taskChange} onDelete={onDelete} />
-      </ol>
+      </ul>
     </div>
   );
 }
