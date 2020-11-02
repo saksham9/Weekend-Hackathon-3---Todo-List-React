@@ -1,47 +1,103 @@
-import React, { useState } from "react";
-import List from "./List";
+import React from "react";
 import "./../styles/App.css";
 
-function App() {
-  const [task, setTask] = useState("");
-  const [todolist, setTodoList] = useState([]);
-  const handleClick = () => {
-    if (task !== "") {
-      const updatelist = [...todolist];
-      updatelist.push(task);
-      setTodoList(updatelist);
-      setTask("");
-      //console.log(updatelist);
+function Task(props) {
+  const [editTask, setEditTask] = React.useState(false);
+  const [content, setContent] = React.useState(props.content);
+  const [saveEnabled, setSaveEnabled] = React.useState(true);
+  const handleEdit = (e) => {
+    setEditTask(true);
+  };
+  const handleDelete = (e) => {
+    props.handleDelete(props.content);
+  };
+  const handleSave = (e) => {
+    let newContent = content.trim();
+    props.handleEdit(props.content, newContent);
+  };
+  const handleTextChange = (e) => {
+    setContent(e.target.value);
+    if (e.target.value.trim().length > 0) {
+      setSaveEnabled(true);
+    } else {
+      setSaveEnabled(false);
     }
   };
-  const handletext = (event) => {
-    setTask(event.target.value);
+  return (
+    <div className="list">
+      <span >{props.content}</span>
+      <button className="edit" onClick={handleEdit}>
+        Edit
+      </button>
+      <button className="delete" onClick={handleDelete}>
+        Delete
+      </button>
+      {editTask && (
+        <>
+          <textarea
+            className="editTask"
+            value={content}
+            onChange={handleTextChange}
+          />
+          <button
+            className="saveTask"
+            onClick={handleSave}
+            disabled={!saveEnabled}
+          >
+            Save
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+function App() {
+  const [taskList, setTaskList] = React.useState([]);
+  const [taskText, setTaskText] = React.useState("");
+  const handleChangeTextArea = (event) => {
+    setTaskText(event.target.value);
   };
-  const taskChange = (index1, task, check) => {
-    if (check) {
+  const handleTaskEdit = (text, newText) => {
+    //console.log(text, newText);
+    const newTaskList = [...taskList];
+    for (let i = 0; i < newTaskList.length; ++i) {
+      if (newTaskList[i] === text) {
+        newTaskList[i] = newText;
+      }
+    }
+    //console.log(newTaskList);
+    setTaskList(newTaskList);
+  };
+  const handleTaskDelete = (text) => {
+    const newTaskList = taskList.filter((txt) => txt !== text);
+    setTaskList(newTaskList);
+  };
+  const handleClick = (event) => {
+    let text = taskText.trim();
+    if (text.length === 0) {
+      setTaskText("");
       return;
     }
-    const updatelist = todolist.map((item, index) => {
-      if (index === index1) {
-        item = task;
-      }
-      return item;
-    });
-    setTodoList(updatelist);
-  };
-  const onDelete = (index1) => {
-    const updatelist = todolist.filter((item, index) => index !== index1);
-    setTodoList(updatelist);
+    const newTaskList = [...taskList];
+    newTaskList.push(text);
+    setTaskText("");
+    setTaskList(newTaskList);
   };
   return (
     <div id="main">
-      <textarea id="task" onChange={handletext} value={task}></textarea>
-      <button id="btn" onClick={handleClick}>
-        Add
-      </button>
-      <ul className="todolist">
-        <List list={todolist} taskChange={taskChange} onDelete={onDelete} />
-      </ul>
+        <textarea id="task" onChange={handleChangeTextArea} value={taskText} />
+        <button id="btn" onClick={handleClick}>
+          Add
+        </button>
+        {taskList.length > 0 &&
+          taskList.map((text) => (
+            <Task
+              key={text}
+              content={text}
+              handleEdit={handleTaskEdit}
+              handleDelete={handleTaskDelete}
+            />
+          ))}
     </div>
   );
 }
